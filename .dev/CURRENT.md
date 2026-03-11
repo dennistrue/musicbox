@@ -4,7 +4,7 @@
 `codex/feature/desktop-drum-sequencer-v1`
 
 ## Current Focus
-Builder work produced a functioning macOS desktop app foundation and packaged `.app` bundle. The remaining focus is live MIDI input wiring and final confirmation of the OpenAI key source strategy.
+Builder work produced a functioning macOS desktop app foundation, packaged `.app` bundle, and a published GitHub repository. The remaining focus is live MIDI input wiring and release-time OpenAI key UX.
 
 ## Active Problems
 - MIDI mode currently supports mapping UI and native device discovery, but not live note capture or step recording.
