@@ -281,3 +281,85 @@ Continue product work on `codex/feature/desktop-drum-sequencer-v1`, with live MI
 - Reasoning: medium
 - Duration: short publish pass
 - Branch: codex/feature/desktop-drum-sequencer-v1
+
+## 2026-03-11 21:31 CET | codex/feature/desktop-drum-sequencer-v1
+
+### Task
+2026-03-11-human-flow-bug-hunt.md
+
+### Problem
+Define an approval-ready testing and bug-fix slice that resembles a human using the app, because current automation is not catching reported runtime errors.
+
+### Findings
+- `npm test`, `npm run build`, `cargo check`, and `tauri build` all pass, so the current failures are likely outside the existing automated coverage.
+- There is no current E2E harness for clicking through the rendered application.
+- The user does not need controller/pad support, so the next bug-hunt slice should not spend time there.
+- Official Tauri WebDriver desktop automation does not support macOS because there is no WKWebView driver tool.
+
+### Decisions
+- Propose a human-flow E2E bug-hunt task centered on rendered-UI automation plus post-fix native smoke checks.
+- Exclude controller support from the next slice.
+- Keep the current feature task active and add a separate approval-gated bug-hunt task.
+
+### Validation
+- Tests run: task-definition evidence review only
+- Evidence: existing green checks plus official macOS Tauri WebDriver limitation support the proposed test strategy.
+
+### External Reasoning
+- Used: no
+- Cost (USD): 0.0
+- Evidence: n/a
+
+### Result
+Approval-ready human-flow bug-hunt task created. No new implementation started in this turn.
+
+### Next Step
+Obtain explicit approval for `codex/debug/human-flow-e2e-bug-hunt`, then add E2E coverage and fix the reproduced failures.
+
+### Process Report Summary
+- Reasoning: high
+- Duration: short thinker pass
+- Branch: codex/feature/desktop-drum-sequencer-v1
+
+## 2026-03-11 21:38 CET | codex/debug/human-flow-e2e-bug-hunt
+
+### Task
+2026-03-11-human-flow-bug-hunt.md
+
+### Problem
+Add a human-like automated test that exercises the sequencer UI and use it to reproduce and fix actual runtime defects.
+
+### Findings
+- Existing green checks (`vitest`, `build`, `cargo check`, `tauri build`) did not exercise real interactive flows.
+- A Playwright-driven human-flow test reproduced a real defect: after importing a sample and reloading, the custom kit still showed the sample label but the sample was no longer loadable.
+- Root cause was browser-preview persistence storing imported samples as temporary blob URLs via `URL.createObjectURL(file)`, which do not survive reload.
+
+### Decisions
+- Add Playwright as the E2E harness and run it against the rendered app surface.
+- Exclude E2E specs from Vitest so unit and browser tests do not conflict.
+- Persist imported samples in browser-preview mode as data URLs instead of temporary blob URLs.
+- Ignore `test-results/` and `playwright-report/` in git.
+
+### Validation
+- Tests run: `npm test`
+- Tests run: `npm run test:e2e`
+- Tests run: `npm run build`
+- Tests run: `cargo check --manifest-path /Users/dennistrue/musicbox/src-tauri/Cargo.toml`
+- Tests run: `npm exec tauri build -- --debug`
+- Evidence: the E2E flow now passes through launch, step editing, arranger changes, AI generation/apply, sample import, and reload persistence without failure.
+
+### External Reasoning
+- Used: no
+- Cost (USD): 0.0
+- Evidence: n/a
+
+### Result
+Human-flow E2E coverage is in place and one real runtime persistence bug was fixed with regression coverage.
+
+### Next Step
+Either broaden the E2E matrix to cover more journeys or move to the next product slice, likely release-time OpenAI key UX.
+
+### Process Report Summary
+- Reasoning: high
+- Duration: E2E harness, bug reproduction, fix, and validation
+- Branch: codex/debug/human-flow-e2e-bug-hunt

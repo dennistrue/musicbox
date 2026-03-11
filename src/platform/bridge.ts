@@ -14,6 +14,23 @@ interface PersistedSample {
   path: string;
 }
 
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        resolve(reader.result);
+        return;
+      }
+      reject(new Error("Could not read file as data URL."));
+    };
+    reader.onerror = () => {
+      reject(reader.error ?? new Error("Could not read imported file."));
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 function isTauriRuntime(): boolean {
   return typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
 }
@@ -68,7 +85,9 @@ export async function persistImportedSample(
   file: File,
 ): Promise<PersistedSample | null> {
   if (!isTauriRuntime()) {
-    return null;
+    return {
+      path: await readFileAsDataUrl(file),
+    };
   }
 
   const buffer = await file.arrayBuffer();

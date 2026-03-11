@@ -36,6 +36,12 @@ Run tests:
 npm test
 ```
 
+Run the human-flow E2E test:
+
+```bash
+npm run test:e2e
+```
+
 Run the desktop app once the Rust toolchain is available:
 
 ```bash

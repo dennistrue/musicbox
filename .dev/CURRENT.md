@@ -1,13 +1,14 @@
 # CURRENT
 
 ## Branch
-`codex/feature/desktop-drum-sequencer-v1`
+`codex/debug/human-flow-e2e-bug-hunt`
 
 ## Current Focus
-Builder work produced a functioning macOS desktop app foundation, packaged `.app` bundle, and a published GitHub repository. The remaining focus is live MIDI input wiring and release-time OpenAI key UX.
+Builder work produced a functioning macOS desktop app foundation, packaged `.app` bundle, and a published GitHub repository. A human-flow E2E bug-hunt pass is now in place, and the immediate remaining focus is release-time key UX plus any additional runtime issues that surface from broader usage.
 
 ## Active Problems
-- MIDI mode currently supports mapping UI and native device discovery, but not live note capture or step recording.
+- Live human-flow coverage now exists, but it currently represents one core journey rather than the full product surface.
+- MIDI controller support is explicitly out of scope.
 - Local development now has a confirmed git-ignored `.env.local` path for the OpenAI key, but user-facing key configuration is still absent.
 - Manual app QA is still needed for audio feel, imported-sample playback in the packaged app, and AI prompt flow with a real key.
 
@@ -22,7 +23,7 @@ Builder work produced a functioning macOS desktop app foundation, packaged `.app
 - Do not use a synthesized in-house kit as the bundled electronic factory option.
 
 ## Open Questions
-- Should the next builder slice prioritize live MIDI input/recording or end-user OpenAI key settings UI?
+- Should the next builder slice expand E2E coverage further or prioritize end-user OpenAI key settings UI?
 - Should the app surface explicit user key configuration for release builds, or is local `.env.local`/environment injection acceptable?
 - Are additional manual QA findings expected before this task is split into follow-up work?
 
